@@ -1,4 +1,6 @@
 {
+  "name": "vote-system",
+  "type": "module",
   "scripts": {
     "start": "nodemon app.js"
   },
