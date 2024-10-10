@@ -22,7 +22,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: Process.env.DB_NAME,
+  database: process.env.DB_NAME,
   waitForConnections: true,  // 커넥션 풀이 가득 찼을 때 대기
   connectionLimit: 10,       // 최대 커넥션 수
   queueLimit: 0,            // 대기 큐 제한 없음
