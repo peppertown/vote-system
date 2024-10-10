@@ -6,7 +6,10 @@
 // 단점: 설정이 약간 더 복잡할 수 있습니다.
 
 // Get the client
-import mysql from "mysql2/promise";
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Create the connection to database
 // const connection = await mysql.createConnection({
@@ -23,17 +26,15 @@ const pool = mysql.createPool({
   user: 'root',
   password: 'root',
   database: process.env.DB_NAME,
-  waitForConnections: true,  // 커넥션 풀이 가득 찼을 때 대기
-  connectionLimit: 10,       // 최대 커넥션 수
-  queueLimit: 0,            // 대기 큐 제한 없음
-  maxIdle: 10,              // 유휴 커넥션 최대 수
-  idleTimeout: 60000,       // 유휴 커넥션 타임아웃 (60초) (디폴트)
-  enableKeepAlive: true,    // 커넥션 유지
-  keepAliveInitialDelay: 0,  // keepalive 초기 딜레이
+  waitForConnections: true, // 커넥션 풀이 가득 찼을 때 대기
+  connectionLimit: 10, // 최대 커넥션 수
+  queueLimit: 0, // 대기 큐 제한 없음
+  maxIdle: 10, // 유휴 커넥션 최대 수
+  idleTimeout: 60000, // 유휴 커넥션 타임아웃 (60초) (디폴트)
+  enableKeepAlive: true, // 커넥션 유지
+  keepAliveInitialDelay: 0, // keepalive 초기 딜레이
   dateStrings: true,
 });
-
-
 
 // 사용법 예시 코드
 
@@ -50,6 +51,5 @@ const pool = mysql.createPool({
 // }
 
 // https://sidorares.github.io/node-mysql2/docs
-
 
 export default pool;
