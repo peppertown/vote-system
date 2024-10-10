@@ -49,5 +49,7 @@ const pool = mysql.createPool({
 //   }
 // }
 
+// https://sidorares.github.io/node-mysql2/docs
+
 
 export default pool;
