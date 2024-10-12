@@ -22,9 +22,9 @@ dotenv.config();
 
 // 설정 예시
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'root',
   database: process.env.DB_NAME,
   waitForConnections: true, // 커넥션 풀이 가득 찼을 때 대기
   connectionLimit: 10, // 최대 커넥션 수
