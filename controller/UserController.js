@@ -64,8 +64,8 @@ export async function createUser(req, res) {
   }
 }
 
+// 유저 정보가져오는 함수 (현재 사용하지 않음)
 export async function getUser(req, res) {
-  console.log('getUser');
   const { userId } = req.params;
 
   try {
@@ -88,7 +88,6 @@ export async function getUser(req, res) {
 // 사용자 프로필 조회 함수
 // TODO : 사용자가 생성한 surveys, responses 등도 함께 조회할 수 있게 하면 좋을듯 (담당 DB구조 확인 후 수정)
 export async function getMyProfile(req, res) {
-  console.log('getMyProfile');
   const token = req.cookies.token;
 
   if (!token) {
