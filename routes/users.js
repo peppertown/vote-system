@@ -109,7 +109,14 @@ router.delete('/auth', logout);
 router.get('/check-email', checkEmailExists);
 
 // GET /users/:userId 유저 정보 조회
-router.get('/:userId', getUser);
+router.get(
+  '/:userId',
+  [
+    param('userId').isInt().withMessage('userId는 숫자이어야 합니다.'),
+    validate,
+  ],
+  getUser,
+);
 
 // TODO
 // 비밀번호 초기화
