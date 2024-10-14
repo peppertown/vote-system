@@ -293,3 +293,28 @@ export async function logout(req, res) {
   res.clearCookie('token');
   return res.status(StatusCodes.OK).end();
 }
+
+// 이메일 중복 여부 확인 함수
+export async function checkEmailExists(req, res) {
+  const { email } = req.query;
+
+  try {
+    const [rows, fields] = await pool.execute(
+      `SELECT id FROM users WHERE email = ?`,
+      [email],
+    );
+
+    if (rows.length > 0) {
+      return res
+        .status(StatusCodes.CONFLICT)
+        .send({ message: '이미 사용 중인 이메일입니다.' });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .send({ message: '사용 가능한 이메일입니다.' });
+  } catch (err) {
+    console.log(err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
+}
