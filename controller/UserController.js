@@ -64,7 +64,7 @@ export async function createUser(req, res) {
   }
 }
 
-// 유저 정보가져오는 함수 (현재 사용하지 않음)
+// 유저 정보가져오는 함수
 export async function getUser(req, res) {
   const { userId } = req.params;
 

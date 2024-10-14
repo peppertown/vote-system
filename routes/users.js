@@ -19,10 +19,6 @@ router.get('/', searchUsers);
 // POST /users 회원가입
 router.post('/', createUser);
 
-// GET /users/:userId 유저 정보 조회
-// TODO : /me와 충돌로 라투트 변경해야할듯 ㅠㅠㅠㅠㅠㅠ
-// router.get('/:userId', getUser);
-
 // GET /users/me 내 정보 조회
 router.get('/me', getMyProfile);
 
@@ -34,6 +30,9 @@ router.delete('/me', deleteMyAccount);
 
 // PATCH /users/me/password 비밀번호 변경
 router.patch('/me/password', changeMyPassword);
+
+// GET /users/:userId 유저 정보 조회
+router.get('/:userId', getUser);
 
 // POST /users/auth 로그인
 router.post('/auth', login);
