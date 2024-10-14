@@ -91,7 +91,44 @@ router.post(
 router.get('/me', getMyProfile);
 
 // PATCH /users/me 내 정보 수정
-router.patch('/me', updateMyProfile);
+router.patch(
+  '/me',
+  [
+    body('userName')
+      .isString()
+      .withMessage('userName은 문자열이어야 합니다.')
+      .optional(),
+    body('promotionEmailConsent')
+      .isBoolean()
+      .withMessage('promotionEmailConsent는 불리언 값이어야 합니다.')
+      .optional(),
+    body('mbti')
+      .isString()
+      .withMessage('mbti는 문자열이어야 합니다.')
+      .isIn([
+        'ISTJ',
+        'ISFJ',
+        'INFJ',
+        'INTJ',
+        'ISTP',
+        'ISFP',
+        'INFP',
+        'INTP',
+        'ESTP',
+        'ESFP',
+        'ENFP',
+        'ENTP',
+        'ESTJ',
+        'ESFJ',
+        'ENFJ',
+        'ENTJ',
+      ])
+      .withMessage('mbti는 MBTI 유형이어야 합니다.')
+      .optional(),
+    validate,
+  ],
+  updateMyProfile,
+);
 
 // DELETE /users/me 회원탈퇴
 router.delete('/me', deleteMyAccount);
