@@ -33,7 +33,59 @@ router.get(
 );
 
 // POST /users 회원가입
-router.post('/', createUser);
+router.post(
+  '/',
+  [
+    body('userName')
+      .isString()
+      .withMessage('userName은 문자열이어야 합니다.')
+      .notEmpty()
+      .withMessage('userName은 필수 입력값입니다.'),
+    body('email')
+      .isEmail()
+      .withMessage('email은 이메일 형식이어야 합니다.')
+      .notEmpty()
+      .withMessage('email은 필수 입력값입니다.'),
+    body('password')
+      .isString()
+      .withMessage('password는 문자열이어야 합니다.')
+      .isLength({ min: 8 })
+      .withMessage('password는 8글자 이상이어야 합니다.')
+      .notEmpty()
+      .withMessage('password는 필수 입력값입니다.'),
+    body('promotionEmailConsent')
+      .isBoolean()
+      .withMessage('promotionEmailConsent는 불리언 값이어야 합니다.')
+      .notEmpty()
+      .withMessage('promotionEmailConsent는 필수 입력값입니다.'),
+    body('mbti')
+      .isString()
+      .withMessage('mbti는 문자열이어야 합니다.')
+      .isIn([
+        'ISTJ',
+        'ISFJ',
+        'INFJ',
+        'INTJ',
+        'ISTP',
+        'ISFP',
+        'INFP',
+        'INTP',
+        'ESTP',
+        'ESFP',
+        'ENFP',
+        'ENTP',
+        'ESTJ',
+        'ESFJ',
+        'ENFJ',
+        'ENTJ',
+      ])
+      .withMessage('mbti는 MBTI 유형이어야 합니다.')
+      .notEmpty()
+      .withMessage('mbti는 필수 입력값입니다.'),
+    validate,
+  ],
+  createUser,
+);
 
 // GET /users/me 내 정보 조회
 router.get('/me', getMyProfile);
