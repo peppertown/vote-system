@@ -15,7 +15,7 @@ export async function searchUsers(req, res) {
       `SELECT id, username, mbti FROM users
        WHERE username LIKE ? OR mbti LIKE ? OR choseong LIKE ?
        LIMIT 10`,
-      [`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`],
+      [`${searchQuery}%`, `${searchQuery}%`, `${searchQuery}%`],
     );
 
     if (rows.length === 0) {
