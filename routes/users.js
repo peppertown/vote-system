@@ -97,7 +97,20 @@ router.patch('/me', updateMyProfile);
 router.delete('/me', deleteMyAccount);
 
 // PATCH /users/me/password 비밀번호 변경
-router.patch('/me/password', changeMyPassword);
+router.patch(
+  '/me/password',
+  [
+    body('newPassword')
+      .isString()
+      .withMessage('newPassword는 문자열이어야 합니다.')
+      .isLength({ min: 8 })
+      .withMessage('newPassword는 8글자 이상이어야 합니다.')
+      .notEmpty()
+      .withMessage('newPassword는 필수 입력값입니다.'),
+    validate,
+  ],
+  changeMyPassword,
+);
 
 // POST /users/auth 로그인
 router.post(
