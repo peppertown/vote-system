@@ -106,7 +106,18 @@ router.post('/auth', login);
 router.delete('/auth', logout);
 
 // GET /users/emails 이메일 중복 여부 확인
-router.get('/check-email', checkEmailExists);
+router.get(
+  '/check-email',
+  [
+    query('email')
+      .isEmail()
+      .withMessage('email은 이메일 형식이어야 합니다.')
+      .notEmpty()
+      .withMessage('email은 필수 입력값입니다.'),
+    validate,
+  ],
+  checkEmailExists,
+);
 
 // GET /users/:userId 유저 정보 조회
 router.get(
