@@ -100,7 +100,23 @@ router.delete('/me', deleteMyAccount);
 router.patch('/me/password', changeMyPassword);
 
 // POST /users/auth 로그인
-router.post('/auth', login);
+router.post(
+  '/auth',
+  [
+    body('email')
+      .isEmail()
+      .withMessage('email은 이메일 형식이어야 합니다.')
+      .notEmpty()
+      .withMessage('email은 필수 입력값입니다.'),
+    body('password')
+      .isString()
+      .withMessage('password는 문자열이어야 합니다.')
+      .notEmpty()
+      .withMessage('password는 필수 입력값입니다.'),
+    validate,
+  ],
+  login,
+);
 
 // DELETE /users/auth 로그아웃
 router.delete('/auth', logout);
