@@ -1,8 +1,7 @@
-const express = require("express");
+import express from 'express';
 const app = express();
 
-const dotenv = require("dotenv");
-dotenv.config();
+import 'dotenv/config';
 
 // 포트번호를 환경변수로 설정해주세요.
 const PORT_NUMBER = process.env.PORT_NUMBER;
