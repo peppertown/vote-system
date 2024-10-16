@@ -1,5 +1,4 @@
 import express from 'express';
-import pool from '../mariadb.js';
 const router = express.Router();
 router.use(express.json());
 
