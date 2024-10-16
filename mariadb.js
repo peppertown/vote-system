@@ -4,7 +4,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: Process.env.DB_NAME,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -15,4 +15,4 @@ const pool = mysql.createPool({
   dateStrings: true,
 });
 
-export default connection;
+export default pool;
