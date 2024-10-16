@@ -1,12 +1,15 @@
-const express = require("express");
+// express 모듈
+const express = require('express');
 const app = express();
 
-const dotenv = require("dotenv");
+
+// dotenv 모듈
+const dotenv = require('dotenv')
 dotenv.config();
 
-// 포트번호를 환경변수로 설정해주세요.
-const PORT_NUMBER = process.env.PORT_NUMBER;
+app.listen(process.env.PORT);
 
-app.listen(PORT_NUMBER, () => {
-  console.log(`Server is running on port ${PORT_NUMBER}`);
-});
+const questionRouter = require('./routes/questions');
+
+// 공통 URL 밖으로 내보내기
+app.use('/surveys', questionRouter);
