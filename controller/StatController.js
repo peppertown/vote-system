@@ -88,6 +88,12 @@ const showResult = async (req, res) => {
     );
     result.push({ [text[0].option_text]: option.count });
   }
+
+  result.sort((a, b) => {
+    const val1 = Object.values(a)[0];
+    const val2 = Object.values(b)[0];
+    return val2 - val1;
+  });
   res.json(result);
 };
 
