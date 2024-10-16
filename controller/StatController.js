@@ -74,6 +74,21 @@ const showMostChoiced = async (req, res) => {
   res.json(result);
 };
 
-const showResult = async (req, res) => {};
+const showResult = async (req, res) => {
+  const surveyId = req.params.id;
+  let sql = `SELECT option_id, COUNT(*) AS count FROM answer_choices
+             WHERE question_id = ? GROUP BY option_id; `;
+  const [optionsCount] = await pool.execute(sql, [surveyId]);
+
+  const result = [];
+  for (let option of optionsCount) {
+    const [text] = await pool.execute(
+      `SELECT option_text FROM question_options WHERE id = ?`,
+      [option.option_id],
+    );
+    result.push({ [text[0].option_text]: option.count });
+  }
+  res.json(result);
+};
 
 export default { showMostChoiced, showResult };
