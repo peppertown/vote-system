@@ -1,6 +1,6 @@
 import pool from '../mariadb.js';
 
-const showResult = async (req, res) => {
+const showMostChoiced = async (req, res) => {
   const surveyId = req.params.id;
   let { mbti } = req.query;
   mbti = mbti === 'true';
@@ -74,4 +74,6 @@ const showResult = async (req, res) => {
   res.json(result);
 };
 
-export default showResult;
+const showResult = async (req, res) => {};
+
+export default { showMostChoiced, showResult };
