@@ -21,13 +21,13 @@ const showMostChoiced = async (req, res) => {
     );
 
     [mostChoiced] = await pool.execute(
-      `SELECT option_id, COUNT(*) as count FROM answer_choices
-       WHERE response_id IN (SELECT id FROM responses WHERE survey_id = ?)
-       GROUP BY option_id HAVING count = (
-       SELECT MAX(count) FROM ( SELECT COUNT(*) as count FROM answer_choices
-       WHERE response_id IN (SELECT id FROM responses WHERE survey_id = ?)
-       GROUP BY option_id ) as max_counts );`,
-      [surveyId, surveyId],
+      `WITH OptionCounts AS (
+    SELECT option_id, COUNT(*) AS count
+    FROM answer_choices
+    WHERE response_id IN (SELECT id FROM responses WHERE survey_id = ?)
+    GROUP BY option_id) SELECT option_id, count
+    FROM OptionCounts WHERE count = (SELECT MAX(count) FROM OptionCounts);`,
+      [surveyId],
     );
 
     for (let answer of mostChoiced) {
@@ -55,12 +55,10 @@ const showMostChoiced = async (req, res) => {
         const optionText = optionTextResult[0].option_text;
 
         const [mbtiData] = await pool.execute(
-          `SELECT u.mbti, COUNT(*) as count FROM answer_choices ac
-         JOIN responses r ON ac.response_id = r.id
-         JOIN users u ON r.user_id = u.id
-         WHERE ac.option_id = ?
-         GROUP BY u.mbti
-         ORDER BY count DESC`,
+          `SELECT u.mbti, COUNT(*) as count FROM users u
+          JOIN responses r ON u.id = r.user_id 
+          JOIN answer_choices ac ON r.id = ac.response_id 
+          WHERE ac.option_id = ? GROUP BY u.mbti ORDER BY count DESC;`,
           [answer.option_id],
         );
 
