@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRouter from './routes/users.js';
 import questionRouter from './routes/questions.js';
+import statRouter from './routes/stats.js';
 
 dotenv.config();
 
