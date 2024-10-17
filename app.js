@@ -4,7 +4,7 @@ const app = express();
 
 
 // dotenv 모듈
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 dotenv.config();
 
 app.listen(process.env.PORT);

@@ -49,40 +49,54 @@ const allQuestion = (req, res) => {
 };
 
 const editQuestion = (req, res) => {
-    let {question_text, question_type, option_text} = req.body;
-    let {id, question_id} = req.params;
-    let {editOptions, editQuestion} = req.query; // 쿼리 파라미터로 작업 구분
+    let {question_text, question_type} = req.body;
+    let {id} = req.params;
     let sql;
     let values = [];
     
-    if (editQuestion) {
-        // 질문 수정
-        sql = `UPDATE questions
-        SET question_text = ?,
-        question_type = ?
-        WHERE id = ?;`; // 여기서 id는 question_id
-        values = [question_text, question_type, id];
-        
-    } else if (editOptions) {   
+     // 질문 수정
+     sql = `UPDATE questions
+     SET question_text = ?,
+     question_type = ?
+     WHERE id = ?;`; // 여기서 id는 question_id
+     values = [question_text, question_type, id];
+     
+     conn.query(sql, values, 
+         (err, result) => {
+             if (err) {
+             return res.status(500).send('Error updating question');
+         }
+     });
+
+     return res.status(StatusCodes.OK).json({ message: "Update successful" });   
+};
+
+const editOptions = (req, res) => {
+    let {option_text} = req.body;
+    let {question_id, option_id} = req.params;
+    let sql;
+    let values = [];
+
+    if (editOptions) {   
         // 옵션 수정
         sql = `UPDATE question_options
         SET option_text = ?
         WHERE question_id = ? AND question_num = ?`;
-        values = [option_text, id, question_id];
+        values = [option_text, question_id, option_id];
     }
-        conn.query(sql, values, 
-            (err, result) => {
-                if (err) {
-                return res.status(500).send('Error updating question');
-            }
-        });
 
-        return res.status(StatusCodes.OK).json({ message: "Update successful" });
+    conn.query(sql, values, 
+        (err, result) => {
+            if (err) {
+            return res.status(500).send('Error updating question');
+        }
+    });
+
+    return res.status(StatusCodes.OK).json({ message: "Update successful" });   
 };
 
 const deleteQuestion = (req, res) => {
     let {id} = req.params;
-    let {deleteOptions, deleteQuestion} = req.query; // 쿼리 파라미터로 작업 구분
 
     if (deleteOptions) {
         // 옵션 삭제
@@ -94,12 +108,12 @@ const deleteQuestion = (req, res) => {
             return res.status(StatusCodes.OK).json({ message: "Update successful" });
         }); 
     } else if (deleteQuestion) {
-        // 질문 삭제시, 옵션을 먼저 삭제
-        let option_sql = `DELETE FROM question_options WHERE question_id = ?;`;
-        conn.query(option_sql, id, (err, result) => {
-            if (err) {
-                return res.status(500).send('Error deleting question options');
-            }
+        // // 질문 삭제시, 옵션을 먼저 삭제
+        // let option_sql = `DELETE FROM question_options WHERE question_id = ?;`;
+        // conn.query(option_sql, id, (err, result) => {
+        //     if (err) {
+        //         return res.status(500).send('Error deleting question options');
+        //     }
             // 질문 삭제
             let question_sql = `DELETE FROM questions WHERE id = ?;`;
             conn.query(question_sql, id, (err, result) => {
@@ -108,7 +122,7 @@ const deleteQuestion = (req, res) => {
                 }
                 return res.status(StatusCodes.OK).json({ message: "Question deleted successfully" });
             });
-        });
+        // });
     } else {
         return res.status(400).json({ message: "Please specify whether to delete options or question." });
     }
@@ -118,5 +132,6 @@ module.exports = {
     addQuestion,
     allQuestion,
     editQuestion,
+    editOptions,
     deleteQuestion
 }
