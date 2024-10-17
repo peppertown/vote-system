@@ -16,7 +16,7 @@ const PORT_NUMBER = process.env.PORT_NUMBER || 7777;
 
 app.use('/users', userRouter);
 app.use('/surveys', questionRouter);
-app.use('/stats', statRouter);
+app.use('/surveys', statRouter);
 
 app.listen(PORT_NUMBER, () => {
   console.log(`Server is running on port ${PORT_NUMBER}`);
