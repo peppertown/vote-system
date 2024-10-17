@@ -1,12 +1,23 @@
-const express = require("express");
-const app = express();
 
-const dotenv = require("dotenv");
+import express from 'express';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import userRouter from './routes/users.js';
+const questionRouter = require('./routes/questions');
+
 dotenv.config();
 
-// 포트번호를 환경변수로 설정해주세요.
-const PORT_NUMBER = process.env.PORT_NUMBER;
+const app = express();
 
-app.listen(PORT_NUMBER, () => {
-  console.log(`Server is running on port ${PORT_NUMBER}`);
-});
+// 미들웨어 설정
+app.use(express.json());
+app.use(cookieParser()); // 쿠키 파서 미들웨어 추가
+
+// 포트번호를 환경변수로 설정해주세요.
+const PORT_NUMBER = process.env.PORT_NUMBER || 7777;
+
+app.use('/users', userRouter);
+app.use('/surveys', questionRouter);
+app.use('/stats', statRouter);
+
+app.listen(PORT_NUMBER);
