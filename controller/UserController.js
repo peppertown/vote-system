@@ -2,10 +2,7 @@ import pool from '../mariadb.js';
 import { StatusCodes } from 'http-status-codes';
 import { randomBytes, pbkdf2Sync } from 'crypto';
 import getChoseong from '../utils/getChoseong.js';
-import jwt from 'jsonwebtoken'; // CJS module
-import dotenv from 'dotenv';
-
-dotenv.config();
+import jwt from 'jsonwebtoken'; // CJS module;
 
 export async function searchUsers(req, res) {
   const { searchQuery } = req.query; // TODO : 유효성 검사 시 특수문자 못받게 해야함

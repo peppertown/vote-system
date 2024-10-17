@@ -1,11 +1,9 @@
-
 import express from 'express';
-import dotenv from 'dotenv';
+import './loadEnv.js';
 import cookieParser from 'cookie-parser';
 import userRouter from './routes/users.js';
-const questionRouter = require('./routes/questions');
-
-dotenv.config();
+import questionRouter from './routes/questions.js';
+import statRouter from './routes/stats.js';
 
 const app = express();
 
@@ -20,4 +18,6 @@ app.use('/users', userRouter);
 app.use('/surveys', questionRouter);
 app.use('/stats', statRouter);
 
-app.listen(PORT_NUMBER);
+app.listen(PORT_NUMBER, () => {
+  console.log(`Server is running on port ${PORT_NUMBER}`);
+});
