@@ -7,7 +7,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
-app.listen(process.env.PORT);
+app.listen(1126);
 
 const questionRouter = require('./routes/questions');
 

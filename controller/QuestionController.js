@@ -97,10 +97,11 @@ const editOptions = (req, res) => {
 
 const deleteQuestion = (req, res) => {
     let {id} = req.params;
+    let {deleteOptions, deleteQuestion} = req.query; 
 
     if (deleteOptions) {
         // 옵션 삭제
-        let option_sql = `DELETE FROM question_options WHERE question_id = ?;`;
+        let option_sql = `DELETE FROM question_options WHERE question_num = ?;`;
         conn.query(option_sql, id, (err, result) => {
             if (err) {
                 return res.status(500).send('Error updating question');
@@ -108,21 +109,14 @@ const deleteQuestion = (req, res) => {
             return res.status(StatusCodes.OK).json({ message: "Update successful" });
         }); 
     } else if (deleteQuestion) {
-        // // 질문 삭제시, 옵션을 먼저 삭제
-        // let option_sql = `DELETE FROM question_options WHERE question_id = ?;`;
-        // conn.query(option_sql, id, (err, result) => {
-        //     if (err) {
-        //         return res.status(500).send('Error deleting question options');
-        //     }
-            // 질문 삭제
-            let question_sql = `DELETE FROM questions WHERE id = ?;`;
-            conn.query(question_sql, id, (err, result) => {
-                if (err) {
-                    return res.status(500).send('Error deleting question');
-                }
-                return res.status(StatusCodes.OK).json({ message: "Question deleted successfully" });
-            });
-        // });
+        // 질문 삭제
+        let question_sql = `DELETE FROM questions WHERE id = ?;`;
+        conn.query(question_sql, id, (err, result) => {
+            if (err) {
+                return res.status(500).send('Error deleting question');
+            }
+            return res.status(StatusCodes.OK).json({ message: "Question deleted successfully" });
+        });
     } else {
         return res.status(400).json({ message: "Please specify whether to delete options or question." });
     }
