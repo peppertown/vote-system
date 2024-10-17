@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRouter from './routes/users.js';
-import statRouter from './routes/stat.js';
 const questionRouter = require('./routes/questions');
 
 dotenv.config();
