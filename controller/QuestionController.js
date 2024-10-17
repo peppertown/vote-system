@@ -110,32 +110,39 @@ export const editOptions = async (req, res) => {
 };
 
 export const deleteQuestion = async (req, res) => {
-  let { id } = req.params;
-  let { deleteOptions, deleteQuestion } = req.query;
+  const { question_id } = req.params;
 
-  if (deleteOptions) {
-    // 옵션 삭제
-    let option_sql = `DELETE FROM question_options WHERE question_num = ?;`;
-    conn.query(option_sql, id, (err, result) => {
-      if (err) {
-        return res.status(500).send('Error updating question');
-      }
-      return res.status(StatusCodes.OK).json({ message: 'Update successful' });
-    });
-  } else if (deleteQuestion) {
-    // 질문 삭제
-    let question_sql = `DELETE FROM questions WHERE id = ?;`;
-    conn.query(question_sql, id, (err, result) => {
-      if (err) {
-        return res.status(500).send('Error deleting question');
-      }
-      return res
-        .status(StatusCodes.OK)
-        .json({ message: 'Question deleted successfully' });
-    });
-  } else {
-    return res.status(400).json({
-      message: 'Please specify whether to delete options or question.',
-    });
+  const question_sql = `DELETE FROM questions WHERE id = ?;`;
+
+  try {
+    const [rows, fields] = await pool.execute(question_sql, question_id);
+
+    if (rows.affectedRows === 0) {
+      return res.status(StatusCodes.NOT_FOUND).end();
+    }
+
+    return res.status(StatusCodes.OK).end();
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
+};
+
+export const deleteOptions = async (req, res) => {
+  let { option_id } = req.params;
+
+  const option_sql = `DELETE FROM question_options WHERE question_num = ?;`;
+
+  try {
+    const [rows, fields] = await pool.execute(option_sql, option_id);
+
+    if (rows.affectedRows === 0) {
+      return res.status(StatusCodes.NOT_FOUND).end();
+    }
+
+    return res.status(StatusCodes.OK).end();
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
 };
