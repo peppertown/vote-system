@@ -1,22 +1,52 @@
 const { StatusCodes } = require('http-status-codes');
 const connection = require('../mariadb');
 
-// 설문조사 생성하기 (POST /surveys)
-const createSurvey = (req, res) => {
-  const { title, description, expires_at } = req.body;
+export const createSurvey = async (req, res) => {
+  const { title, description, expires_at, questions } = req.body;
 
-  connection.query(
-    'INSERT INTO surveys (title, description, expires_at) VALUES (?, ?, ?)',
-    [title, description, expires_at],
-    (err, results) => {
-      if (err) {
-        console.error(err);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to create survey' });
+  try {
+    const [rows, fields] = await pool.execute(
+      `INSERT INTO surveys (title, description, expires_at) VALUES (?, ?, ?);`,
+      [title, description, new Date(expires_at)], // expires_at은 문자열로 받아와 Date 객체로 변환
+    );
+
+    const surveyId = rows.insertId;
+
+    const questions_sql = `INSERT INTO questions (survey_id, question_text, question_type, order_num, required)
+                           VALUES ( ? , ?, ?, ?, ?);`;
+
+    for (const question of questions) {
+      const { question_text, question_type, order_num, required, options } =
+        question;
+
+      const [questions_results] = await pool.execute(questions_sql, [
+        surveyId,
+        question_text,
+        question_type,
+        order_num,
+        required,
+      ]);
+
+      const question_id = questions_results.insertId;
+
+      const question_options_sql = `INSERT INTO question_options (question_id, option_text, order_num)
+                                  VALUES ( ? , ?, ?);`;
+
+      for (const option of options) {
+        const { option_text, order_num } = option;
+        await pool.execute(question_options_sql, [
+          question_id,
+          option_text,
+          order_num,
+        ]);
       }
-
-      res.status(StatusCodes.CREATED).json({ message: 'Survey created successfully', surveyId: results.insertId });
     }
-  );
+
+    return res.status(StatusCodes.CREATED).end();
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
 };
 
 // 설문조사 목록 조회하기 (GET /surveys)
