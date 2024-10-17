@@ -99,7 +99,7 @@ const showResult = async (req, res) => {
       const val2 = Object.values(b)[0];
       return val2 - val1;
     });
-    res.json(result);
+    res.status(StatusCodes.OK).json(result);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).end();
   }
