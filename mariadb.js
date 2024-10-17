@@ -1,18 +1,20 @@
-// mysql 모듈 소환
-const mariadb = require('mysql2');
+import mysql from 'mysql2/promise';
 
-// DB와 연결 통로 생성
-const conn = mariadb.createConnection({
-    host : '127.0.0.1',
-    user : 'root',
-    password : 'root',
-    database : 'surveys',
-    dateStrings : true
+
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  maxIdle: 10,
+  idleTimeout: 60000,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 0,
+  dateStrings: true,
 });
 
-conn.connect(err => {
-    if (err) throw err;
-    console.log('Database connected!');
-});
 
-module.exports = conn; 
+export default pool;
