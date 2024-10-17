@@ -1,5 +1,4 @@
 {
-
   "name": "vote-system",
   "type": "module",
   "scripts": {
@@ -9,16 +8,16 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "express-validator": "^7.2.0",
     "http-status-codes": "^2.3.0",
-    "mysql2": "^3.11.3",
     "jsonwebtoken": "^9.0.2",
-
+    "mysql2": "^3.11.3"
   },
   "devDependencies": {
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
+    "nodemon": "^3.1.7",
     "prettier": "^3.3.3"
-    "nodemon": "^3.1.7"
   }
 }

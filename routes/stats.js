@@ -1,9 +1,9 @@
 import express from 'express';
 const router = express.Router();
-router.use(express.json());
 
-import showResult from '../controller/StatController.js';
+import utils from '../controller/StatController.js';
 
-router.get('/:id', showResult);
+router.get('/:id/stats', utils.showResult);
+router.get('/:id/stats/detail', utils.showMostChoiced);
 
 export default router;
