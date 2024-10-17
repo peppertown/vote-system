@@ -1,12 +1,12 @@
-const express = require('express');
-const {
+import { Router } from 'express';
+import {
   addQuestion,
   allQuestion,
   editQuestion,
   editOptions,
   deleteQuestion,
-} = require('../controller/QuestionController');
-const router = express.Router();
+} from '../controller/QuestionController.js';
+const router = Router();
 
 router.post('/:id/questions', addQuestion); // 질문 추가
 router.get('/:id/questions', allQuestion); // 질문 조회
@@ -15,4 +15,4 @@ router.patch('/:id/questions/:question_id/options/:option_id', editOptions); // 
 router.delete('/:id/questions', deleteQuestion); // 질문 삭제
 
 // 모듈화
-module.exports = router;
+export default router;

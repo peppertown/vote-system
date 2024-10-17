@@ -1,9 +1,8 @@
-
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRouter from './routes/users.js';
-const questionRouter = require('./routes/questions');
+import questionRouter from './routes/questions.js';
 
 dotenv.config();
 
