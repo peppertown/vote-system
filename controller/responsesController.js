@@ -20,7 +20,7 @@ const responseVote = (req, res) => {
         }
       }
     );
-  }
+  } 
 
   // 응답 완료 후 성공 메시지 반환
   res.status(StatusCodes.CREATED).json({ message: 'Response submitted successfully' });
