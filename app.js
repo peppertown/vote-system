@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRouter from './routes/users.js';
-import mbtiRouter from './routes/mbti.js';
 import statRouter from './routes/stat.js';
 const questionRouter = require('./routes/questions');
 
@@ -20,6 +19,5 @@ const PORT_NUMBER = process.env.PORT_NUMBER || 7777;
 app.use('/users', userRouter);
 app.use('/surveys', questionRouter);
 app.use('/stats', statRouter);
-app.use('/mbti', mbtiRouter);
 
 app.listen(PORT_NUMBER);
