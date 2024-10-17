@@ -1,6 +1,6 @@
 import pool from '../mariadb.js';
 
-const showResult = async (req, res) => {
+const showMostChoiced = async (req, res) => {
   const surveyId = req.params.id;
   let { mbti } = req.query;
   mbti = mbti === 'true';
@@ -74,4 +74,27 @@ const showResult = async (req, res) => {
   res.json(result);
 };
 
-export default showResult;
+const showResult = async (req, res) => {
+  const surveyId = req.params.id;
+  let sql = `SELECT option_id, COUNT(*) AS count FROM answer_choices
+             WHERE question_id = ? GROUP BY option_id; `;
+  const [optionsCount] = await pool.execute(sql, [surveyId]);
+
+  const result = [];
+  for (let option of optionsCount) {
+    const [text] = await pool.execute(
+      `SELECT option_text FROM question_options WHERE id = ?`,
+      [option.option_id],
+    );
+    result.push({ [text[0].option_text]: option.count });
+  }
+
+  result.sort((a, b) => {
+    const val1 = Object.values(a)[0];
+    const val2 = Object.values(b)[0];
+    return val2 - val1;
+  });
+  res.json(result);
+};
+
+export default { showMostChoiced, showResult };

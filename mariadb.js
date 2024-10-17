@@ -15,5 +15,4 @@ const pool = mysql.createPool({
   dateStrings: true,
 });
 
-
 export default pool;
